@@ -4,6 +4,7 @@ import {setAuto, setCaps} from '@/store/slices/applicationSettings';
 import Voice from '@react-native-voice/voice';
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
+import RNExitApp from 'react-native-exit-app';
 import {
   Button,
   Card,
@@ -13,11 +14,10 @@ import {
   TextInput,
 } from 'react-native-paper';
 
-export const TextBlock = () => {
+export const TextBlock = ({value, handleChange, setValue}: any) => {
   const dispatch = useAppDispatch();
   const {auto, caps} = useAppSelector(selectApplicationSettings);
 
-  const [value, setValue] = useState('');
   const [icon, setIcon] = useState('microphone');
   const [autoValue, setAutoValue] = useState(auto);
   const [capsValue, setCapsValue] = useState(caps);
@@ -31,10 +31,6 @@ export const TextBlock = () => {
     dispatch(setCaps(!caps));
   };
 
-  const handleChange = (text: string) => {
-    setValue(text);
-  };
-
   const onStartButtonPress = () => {
     Voice.start('ru-RU');
   };
@@ -46,6 +42,7 @@ export const TextBlock = () => {
     return () => {
       Voice.destroy().then(Voice.removeAllListeners);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSpeechStartHandler = () => {
@@ -78,7 +75,9 @@ export const TextBlock = () => {
             mode="contained"
             size={100}
             icon={'power'}
-            onPress={() => {}}
+            onPress={() => {
+              RNExitApp.exitApp();
+            }}
             style={styles.micro}
           />
         </View>

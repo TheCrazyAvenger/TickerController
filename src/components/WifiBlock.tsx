@@ -1,11 +1,19 @@
 import React, {useState} from 'react';
 import {StyleSheet} from 'react-native';
-import {Button, Card} from 'react-native-paper';
+import {Button, Card, TextInput} from 'react-native-paper';
 import WifiManager from 'react-native-wifi-reborn';
 import {WifisModal} from './WifisModal';
 
-export const WifiBlock = ({setError}: any) => {
-  const [status, setStatus] = useState('Неизвестно');
+export const WifiBlock = ({
+  connectionStatus,
+  setError,
+  status,
+  setStatus,
+  port,
+  ip,
+  handleChangePort,
+  handleChangeIp,
+}: any) => {
   const [visible, setVisible] = useState(false);
 
   const handleSetVisible = () => {
@@ -51,6 +59,26 @@ export const WifiBlock = ({setError}: any) => {
           )}
         </Card.Actions>
       </Card>
+      {status !== 'Неизвестно' ? (
+        <Card style={styles.container}>
+          <Card.Title title={`Статус: ${connectionStatus}`} />
+          <Card.Content>
+            <TextInput
+              value={ip}
+              label={'IP'}
+              placeholder={'IP'}
+              style={{marginBottom: 10}}
+              onChangeText={handleChangeIp}
+            />
+            <TextInput
+              value={port}
+              label={'Порт'}
+              placeholder={'Порт'}
+              onChangeText={handleChangePort}
+            />
+          </Card.Content>
+        </Card>
+      ) : null}
     </>
   );
 };
